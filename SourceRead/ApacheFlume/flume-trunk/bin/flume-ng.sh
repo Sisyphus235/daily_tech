@@ -23,6 +23,7 @@
 # constants
 ################################
 
+# 针对不同参数执行相应的类，初始化 Flume 环境
 FLUME_AGENT_CLASS="org.apache.flume.node.Application"
 FLUME_AVRO_CLIENT_CLASS="org.apache.flume.client.avro.AvroCLIClient"
 FLUME_VERSION_CLASS="org.apache.flume.tools.VersionInfo"
@@ -198,6 +199,7 @@ in the classpath.
 EOF
 }
 
+# 启动入口
 run_flume() {
   local FLUME_APPLICATION_CLASS
 
@@ -211,6 +213,7 @@ run_flume() {
   if [ ${CLEAN_FLAG} -ne 0 ]; then
     set -x
   fi
+  # 根据环境变量用 java 启动相应的启动类，例如 L27 FLUME_AGENT_CLASS="org.apache.flume.node.Application"
   $EXEC $JAVA_HOME/bin/java $JAVA_OPTS $FLUME_JAVA_OPTS "${arr_java_props[@]}" -cp "$FLUME_CLASSPATH" \
       -Djava.library.path=$FLUME_JAVA_LIBRARY_PATH "$FLUME_APPLICATION_CLASS" $*
 }
@@ -222,6 +225,7 @@ run_flume() {
 # set default params
 FLUME_CLASSPATH=""
 FLUME_JAVA_LIBRARY_PATH=""
+# 默认占用堆空间 20M，可以根据使用情境的 JVM 设置
 JAVA_OPTS="-Xmx20m"
 LD_LIBRARY_PATH=""
 
@@ -235,19 +239,24 @@ opt_dryrun=""
 mode=$1
 shift
 
+# 根据第一个参数确定 cmd 类型
 case "$mode" in
   help)
+    # 展示帮助信息后退出
     display_help
     exit 0
     ;;
   agent)
+    # 标记变量 opt_agent
     opt_agent=1
     ;;
   node)
+    # 标记变量 opt_agent，提示 deprecated
     opt_agent=1
     warn "The \"node\" command is deprecated. Please use \"agent\" instead."
     ;;
   avro-client)
+    # 标记变量 opt_avro_client
     opt_avro_client=1
     ;;
   tool)
@@ -258,6 +267,7 @@ case "$mode" in
    CLEAN_FLAG=0
    ;;
   *)
+    # 所有其他参数，提示无效参数，并展示帮助信息后退出
     error "Unknown or unspecified command '$mode'"
     echo
     display_help
@@ -429,6 +439,7 @@ if [ -n "${opt_dryrun}" ]; then
 fi
 
 # finally, invoke the appropriate command
+# 根据命令第一个参数 mode 标记的变量，执行对应的启动类
 if [ -n "$opt_agent" ] ; then
   run_flume $FLUME_AGENT_CLASS $args
 elif [ -n "$opt_avro_client" ] ; then
