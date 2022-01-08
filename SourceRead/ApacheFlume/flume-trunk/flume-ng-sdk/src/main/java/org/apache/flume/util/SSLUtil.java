@@ -83,6 +83,7 @@ public class SSLUtil {
 
   private static void initSysPropFromEnvVar(String sysPropName, String envVarName,
                                             String description) {
+    // 从环境变量中初始化系统参数
     if (System.getProperty(sysPropName) != null) {
       LOGGER.debug("Global SSL " + description + " has been initialized from system property.");
     } else {

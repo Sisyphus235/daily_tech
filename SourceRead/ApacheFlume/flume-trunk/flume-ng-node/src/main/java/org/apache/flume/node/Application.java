@@ -258,11 +258,13 @@ public class Application {
   }
 
   public static void main(String[] args) {
+    // flume 入口
     Properties initProps = loadConfigOpts();
 
     try {
+      // 初始化全局参数
       SSLUtil.initGlobalSSLParameters();
-
+      // 解析 shell 命令参数
       Options options = new Options();
 
       Option option = new Option("n", "name", true, "the name of this agent");
@@ -324,7 +326,7 @@ public class Application {
 
       option = new Option("h", "help", false, "display help text");
       options.addOption(option);
-
+      // 命令行解析类
       DefaultParser parser = new DefaultParser();
       CommandLine commandLine = parser.parse(options, args, initProps);
 
@@ -332,7 +334,7 @@ public class Application {
         new HelpFormatter().printHelp("flume-ng agent", options, true);
         return;
       }
-
+      // -n 命名
       String agentName = commandLine.getOptionValue('n');
       boolean reload = !commandLine.hasOption("no-reload-conf");
 
@@ -342,6 +344,7 @@ public class Application {
       }
 
       List<URI> confUri = null;
+      // 配置初始化，如果没有提供 conf-provider, 没有配置 zk，没有 confUri，则校验不通过，无法启动
       ConfigurationProvider provider = null;
       int defaultInterval = DEFAULT_FILE_INTERVAL;
       if (commandLine.hasOption('u') || commandLine.hasOption("conf-uri")) {
@@ -379,7 +382,7 @@ public class Application {
         // get options
         String zkConnectionStr = commandLine.getOptionValue('z');
         String baseZkPath = commandLine.getOptionValue('p');
-
+        // reload 设置，则启动时加载一次配置文件，实现动态加载功能采用了发布订阅模式，使用 guava 中的 EventBus 实现
         if (reload) {
           EventBus eventBus = new EventBus(agentName + "-event-bus");
           List<LifecycleAware> components = Lists.newArrayList();
