@@ -4,6 +4,7 @@ from flask import Flask
 
 from config import app_config
 from service.factory import db
+from service.logger import logger
 
 
 def create_app():
@@ -29,4 +30,5 @@ def setup_db(app):
 def setup_health(app):
     @app.route('/health')
     def check_health():
+        logger.info('health ok')
         return 'ok'
