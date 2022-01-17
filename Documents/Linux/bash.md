@@ -89,3 +89,22 @@ $[expression]
 var1 = 2
 var2 = $[var1*10+2]
 ```
+
+## if 条件语句
+
+```bash
+if 条件命令穿
+then
+条件为真时的命令串
+else
+条件为假时的命令串
+fi
+```
+
+## for 循环
+
+```bash
+for 变量名 [in数值列表]
+do 若干个命令
+done
+```
