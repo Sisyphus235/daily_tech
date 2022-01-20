@@ -25,5 +25,5 @@ package org.apache.flume;
  * mechanism to invoke event processing.
  */
 public interface EventDrivenSource extends Source {
-
+    // 包括 exec source, http source, netcat source, thrift source, twitter source 等
 }

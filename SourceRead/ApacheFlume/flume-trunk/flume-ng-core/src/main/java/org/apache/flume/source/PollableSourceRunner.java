@@ -75,7 +75,7 @@ public class PollableSourceRunner extends SourceRunner {
     runner.source = source;
     runner.counterGroup = counterGroup;
     runner.shouldStop = shouldStop;
-
+    // 启动 PollingRunner 线程，用来轮询拉取数据
     runnerThread = new Thread(runner);
     runnerThread.setName(getClass().getSimpleName() + "-" + 
         source.getClass().getSimpleName() + "-" + source.getName());

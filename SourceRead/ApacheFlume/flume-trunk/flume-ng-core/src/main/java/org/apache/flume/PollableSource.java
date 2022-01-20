@@ -29,6 +29,8 @@ import org.apache.flume.source.EventDrivenSourceRunner;
  * @see org.apache.flume.source.EventDrivenSourceRunner
  */
 public interface PollableSource extends Source {
+
+  // 包括 JMS source，kafka source, sequence generator source, stress source, taildir source
   /**
    * <p>
    * Attempt to pull an item from the source, sending it to the channel.

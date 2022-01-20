@@ -33,24 +33,30 @@ public class EventDrivenSourceRunner extends SourceRunner {
   private LifecycleState lifecycleState;
 
   public EventDrivenSourceRunner() {
+    // 启动前是空闲状态
     lifecycleState = LifecycleState.IDLE;
   }
 
   @Override
   public void start() {
     Source source = getSource();
+    // channel 处理器
     ChannelProcessor cp = source.getChannelProcessor();
     cp.initialize();
     source.start();
+    // 启动完毕，置为启动状态
     lifecycleState = LifecycleState.START;
   }
 
   @Override
   public void stop() {
     Source source = getSource();
+    // 先停止 source
     source.stop();
     ChannelProcessor cp = source.getChannelProcessor();
+    // 再停止 channel 处理器
     cp.close();
+    // 停止完毕，置为停止状态
     lifecycleState = LifecycleState.STOP;
   }
 

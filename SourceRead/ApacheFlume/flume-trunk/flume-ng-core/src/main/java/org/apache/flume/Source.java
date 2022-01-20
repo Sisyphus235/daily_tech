@@ -47,6 +47,9 @@ import org.apache.flume.lifecycle.LifecycleAware;
 @InterfaceStability.Stable
 public interface Source extends LifecycleAware, NamedComponent {
 
+  // ChannelProcessor 用来进行日志流的过滤和 Channel 的选择和调度
+  // 提供两种机制，PollableSource 轮询拉取 + EventDrivenSource 事件驱动
+  // 作用是监听日志，采集，交给 ChannelProcessor 处理
   /**
    * Specifies which channel processor will handle this source's events.
    *

@@ -43,7 +43,7 @@ public abstract class SourceRunner implements LifecycleAware {
    */
   public static SourceRunner forSource(Source source) {
     SourceRunner runner = null;
-
+    // 启动时判断 source 类型，轮询/事件驱动
     if (source instanceof PollableSource) {
       runner = new PollableSourceRunner();
       ((PollableSourceRunner) runner).setSource((PollableSource) source);

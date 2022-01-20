@@ -91,6 +91,7 @@ public class Application {
     lifecycleLock.lock();
     try {
       for (LifecycleAware component : components) {
+        // 每个组件都调用 LifecycleSupervisor.supervise 方法，进行服务状态管理
         supervisor.supervise(component,
             new SupervisorPolicy.AlwaysRestartPolicy(), LifecycleState.START);
       }
@@ -266,11 +267,11 @@ public class Application {
       SSLUtil.initGlobalSSLParameters();
       // 解析 shell 命令参数
       Options options = new Options();
-
+      // n 设置含义是 name
       Option option = new Option("n", "name", true, "the name of this agent");
       option.setRequired(true);
       options.addOption(option);
-
+      // f 设置含义是 conf file
       option = new Option("f", "conf-file", true,
               "specify a config file (required if -c, -u, and -z are missing)");
       option.setRequired(false);
@@ -336,6 +337,7 @@ public class Application {
       }
       // -n 命名
       String agentName = commandLine.getOptionValue('n');
+      // 获取是否含有 no-reload-conf 设置
       boolean reload = !commandLine.hasOption("no-reload-conf");
 
       boolean isZkConfigured = false;
@@ -446,6 +448,7 @@ public class Application {
             configurationSources.add(configurationSource);
           }
         }
+        // 初始化一个 List<LifecycleAware> 对象，存放需要启动的组件
         List<LifecycleAware> components = Lists.newArrayList();
         UriConfigurationProvider configurationProvider = new UriConfigurationProvider(agentName,
             configurationSources, backupDirectory, eventBus, interval);
@@ -459,6 +462,7 @@ public class Application {
       } else {
         throw new ParseException("No configuiration was provided");
       }
+      // 程序启动
       application.start();
 
       final Application appReference = application;
