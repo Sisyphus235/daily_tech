@@ -55,8 +55,9 @@ public class ChannelProcessor implements Configurable {
 
   private static final Logger LOG = LoggerFactory.getLogger(
       ChannelProcessor.class);
-
+  // channel 选择器
   private final ChannelSelector selector;
+  // channel 拦截器链
   private final InterceptorChain interceptorChain;
 
   public ChannelProcessor(ChannelSelector selector) {
@@ -143,8 +144,9 @@ public class ChannelProcessor implements Configurable {
    * @throws ChannelException when a write to a required channel fails.
    */
   public void processEventBatch(List<Event> events) {
+    // 批处理实现
     Preconditions.checkNotNull(events, "Event list must not be null");
-
+    // 首先进行拦截器链过滤
     events = interceptorChain.intercept(events);
 
     Map<Channel, List<Event>> reqChannelQueue =
@@ -251,7 +253,7 @@ public class ChannelProcessor implements Configurable {
    * @throws ChannelException when a write to a required channel fails.
    */
   public void processEvent(Event event) {
-
+    // 首先进行拦截器链过滤
     event = interceptorChain.intercept(event);
     if (event == null) {
       return;
@@ -260,6 +262,7 @@ public class ChannelProcessor implements Configurable {
     // Process required channels
     List<Channel> requiredChannels = selector.getRequiredChannels(event);
     for (Channel reqChannel : requiredChannels) {
+      // 通过 channel 选择器获取必须成功处理的 channel，在事务中执行
       Transaction tx = reqChannel.getTransaction();
       Preconditions.checkNotNull(tx, "Transaction object must not be null");
       try {
@@ -289,6 +292,7 @@ public class ChannelProcessor implements Configurable {
     // Process optional channels
     List<Channel> optionalChannels = selector.getOptionalChannels(event);
     for (Channel optChannel : optionalChannels) {
+      // 通过 channel 选择器获取可选的 channel，这些失败是可以忽略的，不影响其他 channel 的处理
       Transaction tx = null;
       try {
         tx = optChannel.getTransaction();
