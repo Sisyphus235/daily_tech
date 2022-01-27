@@ -203,3 +203,19 @@ trap "" signal-list
 ```
 
 > trap 语句对单双引号处理不同，shell 第一次执行到 trap 语句，将把 commands 中的命令扫描一遍。如果 commands 是单引号包围，shell 不会对 commands 中的变量和命令进行替换，否则会用当时具体的值来替换 commands 中的变量和命令。
+
+# 运行 shell 的方法
+
+## sh Shell 程序文件名
+
+命令格式是 `bash Shell 程序文件名`，调用新的 `bash` 命令解释程序，把 Shell 程序文件名作为参数传递给它。新启动的 Shell 将读指定的文件，顺序执行文件中的可执行命令，优点是可以使用 Shell 的调试功能。
+
+## sh
+
+命令格式是 `bash<Shell 程序名`，利用输入重定向，使 Shell 命令解释程序的输入取自指定的程序文件。
+
+## chmod 命令使 Shell 程序成为可执行的
+
+Shell 程序在编辑器生成文件的时候，系统赋予的许可权是 `644(rw-r-r--)`。
+
+> 调试时建议用 sh Shell 程序文件名的方式执行；投入生产的时候用 chmod 使 Shell 程序成为可执行的。
