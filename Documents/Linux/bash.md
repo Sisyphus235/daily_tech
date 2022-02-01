@@ -312,3 +312,33 @@ read 变量名表
 # 比较运算符
 
 ## 文件比较运算符
+
+-e filename， 如果 filename 存在则为真；  
+-d filename， 如果 filename 为目录则为真；  
+-f filename， 如果 filename 为常规文件则为真；  
+-L filename， 如果 filename 为符号链接则为真；  
+-r filename， 如果 filename 可读则为真；  
+-w filename， 如果 filename 可写则为真；  
+-x filename， 如果 filename 可执行则为真；  
+-s filename， 如果 filename 不是空白文件则为真；  
+-u filename， 如果 filename 有 SUID 属性则为真；  
+-g filename， 如果 filename 有 SGID 属性则为真；  
+-k filename， 如果 filename 有 sticky bit 属性则为真；  
+filename1 -nt filename2， 如果 filename1 比 filename2 新则为真；  
+filename1 -ot filename2， 如果 filename1 比 filenam2 旧则为真；
+
+## 字符串比较运算符
+
+-z string，如果 string 长度为零则为真；  
+-n string，如果 string 长度非零则为真；  
+string1=string2，如果 string1 与 string2 相同则为真；  
+string1!=string2，如果 string1 与 string2 不同则为真；
+
+## 算数比较运算符
+
+num1 -eq num2，等于；  
+num1 -ne num2，不等于；  
+num1 -lt num2，小于；  
+num1 -le num2，小于或等于；  
+num1 -gt num2，大于；  
+num1 -ge num2，大于或等于；
