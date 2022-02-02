@@ -342,3 +342,23 @@ num1 -lt num2，小于；
 num1 -le num2，小于或等于；  
 num1 -gt num2，大于；  
 num1 -ge num2，大于或等于；
+
+# 常用 snippet
+
+## 无限循环
+
+```bash
+while [ 1 ];
+do sleep 1;
+ll;
+done
+```
+
+## 有限循环
+
+```bash
+while [ $i -lt 10 ];
+do echo $i;
+let "i=$i+1";
+done
+```
