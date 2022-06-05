@@ -2,8 +2,6 @@
 
 请必须使用时间复杂度为 O(log n) 的算法。
 
-
-
 示例 1:
 
 输入: nums = [1,3,5,6], target = 5
@@ -17,15 +15,9 @@
 输入: nums = [1,3,5,6], target = 7
 输出: 4
 
-
-
 提示:
 
 1 <= nums.length <= 104
 -104 <= nums[i] <= 104
 nums 为   无重复元素   的   升序   排列数组
 -104 <= target <= 104
-
-来源：力扣（LeetCode）
-链接：https://leetcode.cn/problems/search-insert-position
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

@@ -12,7 +12,7 @@ def solution(nums: List[int], target: int) -> int:
             right = middle - 1
         else:
             left = middle + 1
-    return max(left, right)
+    return left
 
 
 def test_cases():
