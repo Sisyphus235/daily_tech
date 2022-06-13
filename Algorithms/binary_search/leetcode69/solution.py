@@ -15,6 +15,16 @@ def solution(x: int) -> int:
     return result
 
 
+def newton_solution(x: int) -> int:
+    c, x0 = float(x), float(x)
+    while True:
+        xi = 0.5 * (x0 + c/x0)
+        if abs(x0 - xi) < 1e-7:
+            break
+        x0 = xi
+    return int(x0)
+
+
 def test_cases():
     cases = [
         (1, 1),
@@ -27,6 +37,7 @@ def test_cases():
         print(
             f'assert {case[0]} == {case[1]}, actual value {solution(case[0])}')
         assert solution(case[0]) == case[1]
+        assert newton_solution(case[0]) == case[1]
 
 
 if __name__ == '__main__':
