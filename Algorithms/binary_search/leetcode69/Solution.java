@@ -5,7 +5,7 @@ public class Solution {
         int result = -1;
         while (left <= right) {
             int mid = left + ((right - left) >> 1);
-            long target = mid * mid;
+            long target = (long) mid * mid;
             if (target <= x) {
                 result = mid;
                 left = mid + 1;
