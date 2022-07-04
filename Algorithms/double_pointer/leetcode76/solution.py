@@ -48,6 +48,35 @@ def solution(s: str, t: str) -> str:
     return result
 
 
+def solution_double_pointer(s: str, t: str) -> str:
+    result = ''
+    t_dict = dict()  # 储存所有字母的数量，先遍历 t 所有的字母遇见 +1，再遍历 s，右指针遇见的字母都 -1
+    for c in t:
+        if c not in t_dict:
+            t_dict[c] = 1
+        else:
+            t_dict[c] += 1
+    left, right, cnt, min_length = 0, 0, 0, len(s) + 1
+    while right < len(s):
+        if s[right] not in t_dict:
+            t_dict[s[right]] = -1
+        else:
+            t_dict[s[right]] -= 1
+        if t_dict[s[right]] >= 0:
+            cnt += 1
+        # 目标字符串长度和 t 相等时，判断当前符合目标的字符串，如果比记录值小则更新，左指针遍历，遇见的字母都 +1，直到 cnt 有变化
+        while cnt == len(t):
+            if min_length > right - left + 1:
+                min_length = right - left + 1
+                result = s[left: left + min_length]
+            t_dict[s[left]] += 1
+            if t_dict[s[left]] > 0:
+                cnt -= 1
+            left += 1
+        right += 1
+    return result
+
+
 def test_cases():
     cases = [
         ("ADOBECODEBANC",  "ABC", "BANC"),
@@ -56,7 +85,8 @@ def test_cases():
     ]
     for case in cases:
         print(f'assert {case[0]}, {case[1]} == {case[2]}')
-        assert solution(case[0], case[1]) == case[2]
+        # assert solution(case[0], case[1]) == case[2]
+        assert solution_double_pointer(case[0], case[1]) == case[2]
 
 
 if __name__ == '__main__':
