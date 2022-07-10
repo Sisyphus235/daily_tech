@@ -7,10 +7,10 @@ def solution(n: int) -> List[List[int]]:
     start_x, start_y, count = 0, 0, 1  # 起始 x, y 坐标和填充起始值
     loop, mid = n//2, n//2  # 按圈填入数字，中心点位置
     for offset in range(1, loop + 1):
-        for i in range(start_x, n-offset):  # 从左到右，不包括右上顶点
+        for i in range(start_y, n-offset):  # 从左到右，不包括右上顶点
             nums[start_x][i] = count
             count += 1
-        for i in range(start_y, n - offset):  # 从上到下，不包括右下顶点
+        for i in range(start_x, n - offset):  # 从上到下，不包括右下顶点
             nums[i][n - offset] = count
             count += 1
         for i in range(n - offset, start_y, -1):  # 从右至左，不包括左下顶点
