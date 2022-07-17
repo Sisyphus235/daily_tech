@@ -5,17 +5,24 @@ def solution(matrix: List[List[int]]) -> List[int]:
     result = []
     if not matrix:
         return result
+    # 初始化边界值
     left, right, top, bottom = 0, len(matrix[0]) - 1, 0, len(matrix) - 1
     while left <= right and top <= bottom:
+        # 处理最上一行，左右闭区间
         for j in range(left, right + 1):
             result.append(matrix[top][j])
+        # 处理最右一列，上下开区间
         for i in range(top + 1, bottom):
             result.append(matrix[i][right])
+        # 处理最下一行，左右闭区间
         for j in range(right, left - 1, -1):
+            # m ≠ n 的时候保护
             if top >= bottom:
                 break
             result.append(matrix[bottom][j])
+        # 处理最左一列，上下开区间
         for i in range(bottom - 1, top, -1):
+            # m ≠ n 的时候保护
             if left >= right:
                 break
             result.append(matrix[i][left])
