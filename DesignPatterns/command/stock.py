@@ -39,7 +39,7 @@ class Agent:
 
     def place_order(self, order):
         self._order_queue.append(order)
-        order.execute
+        order.execute()
 
 
 if __name__ == '__main__':
