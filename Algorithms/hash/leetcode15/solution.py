@@ -11,7 +11,7 @@ def three_sum(nums: List[int]) -> List[List[int]]:
     """
     nums = sorted(nums)
     result = []
-    for i in range(len(nums)):
+    for i in range(len(nums) - 2):
         # 三数之和，因为正序排列，如果第一个数大于零，不可能找到三数和等于零
         if nums[i] > 0:
             break
