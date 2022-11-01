@@ -16,3 +16,18 @@ def inorder_traversal(root: TreeNode) -> List[int]:
 
     traversal(root)
     return result
+
+
+def inorder_traversal_iter(root: TreeNode) -> List[int]:
+    result = []
+    stack = []
+    cur = root
+    while stack or cur:
+        if cur:
+            stack.append(cur)
+            cur = cur.left
+        else:
+            cur = stack.pop()
+            result.append(cur.value)
+            cur = cur.right
+    return result

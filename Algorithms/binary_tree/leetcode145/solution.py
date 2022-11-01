@@ -16,3 +16,17 @@ def postorder_traversal(root: TreeNode) -> List[int]:
 
     traversal(root)
     return result
+
+
+def postorder_traversal_iter(root: TreeNode) -> List[int]:
+    result = []
+    stack = []
+    stack.append(root)
+    while stack:
+        node = stack.pop()
+        if node:
+            result.append(node.value)
+            stack.append(node.left)
+            stack.append(node.right)
+    result.reverse()
+    return result

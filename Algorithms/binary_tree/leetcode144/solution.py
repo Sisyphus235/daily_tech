@@ -16,3 +16,16 @@ def preorder_traversal(root: TreeNode) -> List[int]:
 
     traversal(root)
     return result
+
+
+def preorder_traversal_iter(root: TreeNode) -> List[int]:
+    result = []
+    iter_stack = []
+    iter_stack.append(root)
+    while iter_stack:
+        node = iter_stack.pop()
+        if node:
+            result.append(node.value)
+            iter_stack.append(node.right)
+            iter_stack.append(node.left)
+    return result
