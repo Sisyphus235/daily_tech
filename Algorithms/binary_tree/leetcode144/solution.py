@@ -29,3 +29,24 @@ def preorder_traversal_iter(root: TreeNode) -> List[int]:
             iter_stack.append(node.right)
             iter_stack.append(node.left)
     return result
+
+
+def preorder_traversal_iter_universal(root: TreeNode) -> List[int]:
+    result = []
+    stack = []
+    if root is not None:
+        stack.append(root)
+    while stack:
+        cur = stack.pop()
+        if cur is not None:
+            if cur.right:
+                stack.append(cur.right)
+            if cur.left:
+                stack.append(cur.left)
+            stack.append(cur)
+            stack.append(None)
+        else:
+            cur = stack.pop()
+            result.append(cur.value)
+
+    return result
