@@ -5,7 +5,7 @@ def solution(nums: List[int], target: int) -> int:
     left = 0
     right = len(nums) - 1
     while left <= right:
-        middle = (left + right) // 2
+        middle = left + (right - left) // 2
         if target == nums[middle]:
             return middle
         elif nums[middle] > target:
