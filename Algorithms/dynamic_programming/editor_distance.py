@@ -44,13 +44,54 @@ a      2
 d      3
 """
 
+from enum import IntEnum
+
+
+class ChoiceEnum(IntEnum):
+    INIT = 0
+    INSERT = 1
+    DELETE = 2
+    REPLACE = 3
+    SKIP = 4
+
+
+class EditorNode:
+    def __init__(self, val: int, choice: ChoiceEnum = ChoiceEnum.INIT):
+        self.val = val
+        self.choice = choice
+
 
 def print_dp_table(dp_table):
     for i in range(len(dp_table)):
         for j in range(len(dp_table[i])):
-            print(dp_table[i][j], end=', ')
+            if isinstance(dp_table[i][j], EditorNode):
+                print(f'{dp_table[i][j].val}({dp_table[i][j].choice.name:8})', end=', ')
+            else:
+                print(dp_table[i][j], end=', ')
         print()
     print()
+
+
+def print_choice(dp_table, s1: str, s2: str):
+    i, j = len(s1), len(s2)
+    choice_list = []
+    while i > 0 or j > 0:
+        choice = dp_table[i][j].choice
+        if choice == ChoiceEnum.REPLACE:
+            choice_list.insert(0, f'{choice.name} {s1[i - 1]} with {s2[j - 1]}')
+            i -= 1
+            j -= 1
+        elif choice == ChoiceEnum.SKIP:
+            choice_list.insert(0, f'{choice.name} same alphabet {s1[i - 1]}')
+            i -= 1
+            j -= 1
+        elif choice == ChoiceEnum.INSERT:
+            choice_list.insert(0, f'{choice.name} {s2[j - 1]}')
+            j -= 1
+        else:
+            choice_list.insert(0, f'{choice.name} {s1[i - 1]}')
+            i -= 1
+    print(f'{s1} to {s2}: {" => ".join(choice_list)}')
 
 
 def editor_distance(s1: str, s2: str) -> int:
@@ -60,9 +101,9 @@ def editor_distance(s1: str, s2: str) -> int:
     dp_table = [[0 for j in range(len_s2 + 1)] for i in range(len_s1 + 1)]
     print_dp_table(dp_table)
     # base condition
-    for i in range(len_s1 + 1):
+    for i in range(1, len_s1 + 1):
         dp_table[i][0] = i
-    for j in range(len_s2 + 1):
+    for j in range(1, len_s2 + 1):
         dp_table[0][j] = j
     print_dp_table(dp_table)
     # dp table calc
@@ -77,7 +118,42 @@ def editor_distance(s1: str, s2: str) -> int:
     return dp_table[len_s1][len_s2]
 
 
+def editor_distance_choice(s1: str, s2: str) -> int:
+    # init dp table
+    len_s1 = len(s1)
+    len_s2 = len(s2)
+    dp_table = [[EditorNode(0) for j in range(len_s2 + 1)] for i in range(len_s1 + 1)]
+    print_dp_table(dp_table)
+    # base condition
+    for i in range(1, len_s1 + 1):
+        dp_table[i][0] = EditorNode(i, ChoiceEnum.DELETE)
+    for j in range(1, len_s2 + 1):
+        dp_table[0][j] = EditorNode(j, ChoiceEnum.INSERT)
+    print_dp_table(dp_table)
+    # dp table calc
+    for i in range(1, len_s1 + 1):
+        for j in range(1, len_s2 + 1):
+            if s1[i - 1] == s2[j - 1]:
+                dp_table[i][j] = EditorNode(dp_table[i - 1][j - 1].val, ChoiceEnum.SKIP)
+            else:
+                min_val = min(dp_table[i - 1][j - 1].val, dp_table[i - 1][j].val, dp_table[i][j - 1].val)
+                if min_val == dp_table[i - 1][j - 1].val:
+                    dp_table[i][j] = EditorNode(min_val + 1, ChoiceEnum.REPLACE)
+                elif min_val == dp_table[i - 1][j].val:
+                    dp_table[i][j] = EditorNode(min_val + 1, ChoiceEnum.DELETE)
+                else:
+                    dp_table[i][j] = EditorNode(min_val + 1, ChoiceEnum.INSERT)
+    print_dp_table(dp_table)
+    print_choice(dp_table, s1, s2)
+    return dp_table[len_s1][len_s2].val
+
+
 if __name__ == '__main__':
     assert editor_distance('rad', 'apple') == 5
+    assert editor_distance_choice('rad', 'apple') == 5
+
     assert editor_distance('horse', 'ros') == 3
+    assert editor_distance_choice('horse', 'ros') == 3
+
     assert editor_distance('intention', 'execution') == 5
+    assert editor_distance_choice('intention', 'execution') == 5
