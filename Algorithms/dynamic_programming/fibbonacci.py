@@ -18,13 +18,17 @@ dp[0] = dp[1] = 1
 """
 
 
-def fib_dp(n) -> int:
-    dp_table = [1] * (n + 1)
-    if n < 2:
-        return dp_table[n - 1]  # index 和 n 有 diff 1
+def fib_dp(n: int) -> int:
+    # 边界判断
+    if n < 0:
+        return -1
+    # 初始化 dp table，利用 base case
+    dp_table = [0] + [1] * n
+    # 状态转移方程逐个求解
     for i in range(2, n + 1):
         dp_table[i] = dp_table[i - 1] + dp_table[i - 2]
-    return dp_table[n - 1]
+    # 返回目标值
+    return dp_table[n]
 
 
 def fib(n) -> int:
