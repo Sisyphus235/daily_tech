@@ -39,6 +39,21 @@ def get_longest_increasing_subsequence(array: List[int]) -> int:
     return max(dp_table)
 
 
+def longest_increasing_subsequence(nums: List[int]) -> int:
+    # 初始化
+    dp_table = [1] * len(nums)
+    # 状态转移方程逐个求解，index=0 可越过
+    for i in range(1, len(nums)):
+        # 寻找第一个小于当前整数值的位置
+        j = i - 1
+        while j >= 0:
+            if nums[j] < nums[i]:
+                dp_table[i] = max(dp_table[i], dp_table[j] + 1)
+            j -= 1
+    return max(dp_table)
+
+
 if __name__ == '__main__':
-    assert get_longest_increasing_subsequence([10, 9, 2, 5, 3, 7, 101, 18]) == 4
-    assert get_longest_increasing_subsequence([1, 4, 3, 4, 2]) == 3
+    # assert get_longest_increasing_subsequence([10, 9, 2, 5, 3, 7, 101, 18]) == 4
+    # assert get_longest_increasing_subsequence([1, 4, 3, 4, 2]) == 3
+    longest_increasing_subsequence([0, 1, 0, 3, 2, 3])
